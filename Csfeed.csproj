@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProjectGuid>{8C5E21F0-AF45-4098-80AA-E99EF51F2324}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>csfeed</RootNamespace>
+    <RootNamespace>Csfeed</RootNamespace>
     <AssemblyName>csfeed</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -35,6 +35,9 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors">
       <HintPath>packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,8 +92,12 @@
     <Compile Include="Libs\3rdParty\SharpFont\Internal\SbitTable.cs" />
     <Compile Include="Libs\3rdParty\SharpFont\Internal\SfntTables.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="GameLoop.cs" />
     <Compile Include="LoadMissingImplicit.cs" />
+    <Compile Include="Engine\IEngine.cs" />
+    <Compile Include="Engine\DesktopEngine.cs" />
+    <Compile Include="Engine\WebEngine.cs" />
+    <Compile Include="Engine\GlfwCursors.cs" />
+    <Compile Include="Engine\InputEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />

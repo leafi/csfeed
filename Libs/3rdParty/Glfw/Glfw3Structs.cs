@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Blamalama
+namespace Csfeed
 {
 	[StructLayout(LayoutKind.Explicit, Size = sizeof(int) * 6)]
 	public struct GlfwVidMode

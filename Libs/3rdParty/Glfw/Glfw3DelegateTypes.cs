@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Blamalama
+namespace Csfeed
 {
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public unsafe delegate void GlfwErrorFun(GlfwError code, IntPtr descUtf8);

@@ -1,4 +1,4 @@
-namespace Blamalama
+namespace Csfeed
 {
 
 	public enum StandardCursors

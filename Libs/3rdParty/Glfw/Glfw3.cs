@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Blamalama
+namespace Csfeed
 {
 	public static unsafe class Glfw
 	{

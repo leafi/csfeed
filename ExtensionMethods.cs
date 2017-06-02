@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace Blamalama
+namespace Csfeed
 {
 	public unsafe static class ExtensionMethods
 	{
