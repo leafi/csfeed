@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace csfeed
+namespace Csfeed
 {
 	class MainClass
 	{
 		public static void Main(string[] args)
 		{
 			Console.WriteLine("Hello World!");
+			GameLoop.Run();
 		}
 	}
 }

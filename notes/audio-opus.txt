@@ -1,0 +1,25 @@
+music:
+ffmpeg -i {file} -c:a libopus -af aresample=resampler=soxr -ab 96k output.opus
+
+^ 50% better bitrate than I can hear a difference at. Great for stereo music.
+
+medium: (actually makes music sound 100% fine to me, but i'm not known for having good hearing)
+ffmpeg -i {file} -c:a libopus -af aresample=resampler=soxr -ab 64k output.opus
+^ Purpose: if voice preset is too bad/has orchestral shit in it, or to make music small
+
+voice:
+ffmpeg -i {file} -c:a libopus -af aresample=resampler=soxr -ab 32k output.opus
+
+^ Amazing for mono voice. Transparent.
+If music is mono, even sounds transparent to me there too - but again I have crap hearing.
+Should be used for mono SFX, too - extra bandwidth there is to help overcome anything that crops up from not being voice.
+
+These are all 'near-transparent' settings, i.e. someone with great hearing should have a hell of a time trying to tell the difference between uncompressed and compressed.
+
+Settings can all be turned down to save disk space if needs be.
+
+
+
+I haven't tested that resampler=soxr shit, but given Opus only does 48kHz, some files may need to be resampled from 44.1kHz and apparently the default FFmpeg resampler is fast but complete shit.
+
+

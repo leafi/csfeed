@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProjectGuid>{8C5E21F0-AF45-4098-80AA-E99EF51F2324}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>csfeed</RootNamespace>
+    <AssemblyName>csfeed</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>packages\System.Numerics.Vectors.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Libs\3rdParty\Glfw\Glfw3.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Libs\3rdParty\Glfw\Glfw3DelegateTypes.cs" />
+    <Compile Include="Libs\3rdParty\Glfw\Glfw3Enum.cs" />
+    <Compile Include="Libs\3rdParty\Glfw\Glfw3Structs.cs" />
+    <Compile Include="Libs\3rdParty\OpusfileSharp\OggOpusFile.cs" />
+    <Compile Include="Libs\3rdParty\OpusfileSharp\OpusfileTypes.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Bgfx.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Callbacks.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Capabilities.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\DynamicIndexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\DynamicVertexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Enums.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\FrameBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\IndexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\IndirectBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\InstanceDataBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\MemoryBlock.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\NativeMethods.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\OcclusionQuery.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\PlatformData.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Program.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\RenderState.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Shader.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\StencilFlags.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Texture.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\TransientIndexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\TransientVertexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\Uniform.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\VertexBuffer.cs" />
+    <Compile Include="Libs\3rdParty\SharpBgfx\VertexLayout.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\FontCollection.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\FontFace.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\InvalidFontException.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Metrics.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\TextAnalyzer.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\TextFormat.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\TextLayout.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\BinPacker.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\CharacterMap.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\DataReader.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\Geometry.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\Interpreter.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\KerningTable.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\Renderer.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\SbitTable.cs" />
+    <Compile Include="Libs\3rdParty\SharpFont\Internal\SfntTables.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="GameLoop.cs" />
+    <Compile Include="LoadMissingImplicit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Natives\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Natives\libbgfx.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libbgfx.dylib" />
+    <None Include="Natives\libbgfx.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libbgfx_debug.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libbgfx_debug.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libbgfx_debug.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libglfw.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libglfw.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libglfw.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libogg.0.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libopus.0.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libopusfile.0.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Natives\libopusfile.so.0">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

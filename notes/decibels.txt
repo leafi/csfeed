@@ -1,0 +1,15 @@
+float dBToVolume(float dB)
+{
+  return powf(10.0f, 0.05f * dB);
+}
+
+float VolumeTodB(float volume)
+{
+  return 20.0f * log10f(volume);
+}
+
++6 dB == double
+-6 dB == 1/2
+
+that's all you need to know about decibels.
+
