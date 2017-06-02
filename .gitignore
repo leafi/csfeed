@@ -3,4 +3,6 @@ obj/
 packages/
 *.csproj.user
 *.userprefs
+shaders/tmp/
+shaders/bin/
 

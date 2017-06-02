@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
+    <Folder Include="Engine\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
