@@ -1,0 +1,37 @@
+Update bgfx x64 binaries (source 2017-04-23, built on 2017-06-03)
+
+https://github.com/bkaradzic/bx/commit/f839267a41e51dd4f9f13b8ac1d348db3f42b9f1
+https://github.com/bkaradzic/bimg/commit/69512a3e6fbfcbfe142accf601458043f733b49b
+https://github.com/bkaradzic/bgfx/commit/6f224a832b41a5fd4416f645a5302f6cb415b5a8
+
+Tools are release64. Shared libs are debug64, release64.
+
+Built with:
+Linux: Ubuntu 14.04.5 LTS 64bit w/updates:
+  cd bgfx
+  ../bx/tools/bin/linux/genie --with-tools --with-shared-lib --platform=x64 --gcc=linux-gcc gmake
+  make linux-debug64
+  make linux-release64
+
+OS X: OS X El Capitan 10.11.6 + Homebrew environment:
+  cd bgfx
+  ../bx/tools/bin/darwin/genie --with-tools --with-shared-lib --gcc=osx --platform=x64 gmake
+  make osx-debug64
+  make osx-release64
+
+Windows: Windows 10, Visual Studio Community 2015 Update 2, cmd.exe:
+  cd bgfx
+  ..\bx\tools\bin\windows\genie.exe --with-tools --with-shared-lib --vs=vs2015-xp --platform=x64 vs2015
+  start .build\projects\vs2015\bgfx.sln
+
+  Select build config Debug x64, Build > Build Solution
+  
+  Select build config Release x64, Build > Build Solution
+
+
+tools/bgfx/common sources:
+  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/src/bgfx_compute.sh
+  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/src/bgfx_shader.sh
+  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/examples/common/common.sh
+  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/examples/common/shaderlib.sh
+
