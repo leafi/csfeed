@@ -2,94 +2,109 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace SharpBgfx {
-    /// <summary>
-    /// Delegate type for callback functions.
-    /// </summary>
-    /// <param name="userData">User-provided data to the original allocation call.</param>
-    [SuppressUnmanagedCodeSecurity]
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void ReleaseCallback (IntPtr userData);
+namespace SharpBgfx
+{
+	/// <summary>
+	/// Delegate type for callback functions.
+	/// </summary>
+	/// <param name="userData">User-provided data to the original allocation call.</param>
+	[SuppressUnmanagedCodeSecurity]
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+	public delegate void ReleaseCallback(IntPtr userData);
 
-    /// <summary>
-    /// Represents a block of memory managed by the graphics API.
-    /// </summary>
-    public unsafe struct MemoryBlock : IEquatable<MemoryBlock> {
-        internal readonly DataPtr* ptr;
+	/// <summary>
+	/// Represents a block of memory managed by the graphics API.
+	/// </summary>
+	public unsafe struct MemoryBlock : IEquatable<MemoryBlock>
+	{
+		internal readonly DataPtr* ptr;
 
-        /// <summary>
-        /// Represents an invalid handle.
-        /// </summary>
-        public static readonly MemoryBlock Invalid = new MemoryBlock();
+		/// <summary>
+		/// Represents an invalid handle.
+		/// </summary>
+		public static readonly MemoryBlock Invalid = new MemoryBlock();
 
-        /// <summary>
-        /// The pointer to the raw data.
-        /// </summary>
-        public IntPtr Data {
-            get { return ptr == null ? IntPtr.Zero : ptr->Data; }
-        }
+		/// <summary>
+		/// The pointer to the raw data.
+		/// </summary>
+		public IntPtr Data {
+			get { return ptr == null ? IntPtr.Zero : ptr->Data; }
+		}
 
-        /// <summary>
-        /// The size of the block, in bytes.
-        /// </summary>
-        public int Size {
-            get { return ptr == null ? 0 : ptr->Size; }
-        }
+		/// <summary>
+		/// The size of the block, in bytes.
+		/// </summary>
+		public int Size {
+			get { return ptr == null ? 0 : ptr->Size; }
+		}
 
-        MemoryBlock (DataPtr* ptr) {
-            this.ptr = ptr;
-        }
+		MemoryBlock(DataPtr* ptr)
+		{
+			this.ptr = ptr;
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryBlock"/> struct.
-        /// </summary>
-        /// <param name="size">The size of the block, in bytes.</param>
-        public MemoryBlock (int size) {
-            ptr = NativeMethods.bgfx_alloc(size);
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MemoryBlock"/> struct.
+		/// </summary>
+		/// <param name="size">The size of the block, in bytes.</param>
+		public MemoryBlock(int size)
+		{
+			ptr = NativeMethods.bgfx_alloc(size);
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryBlock"/> struct.
-        /// </summary>
-        /// <param name="data">A pointer to the initial data to copy into the new block.</param>
-        /// <param name="size">The size of the block, in bytes.</param>
-        public MemoryBlock (IntPtr data, int size) {
-            ptr = NativeMethods.bgfx_copy(data, size);
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MemoryBlock"/> struct.
+		/// </summary>
+		/// <param name="data">A pointer to the initial data to copy into the new block.</param>
+		/// <param name="size">The size of the block, in bytes.</param>
+		public MemoryBlock(IntPtr data, int size)
+		{
+			ptr = NativeMethods.bgfx_copy(data, size);
+		}
 
-        /// <summary>
-        /// Copies a managed array into a native graphics memory block.
-        /// </summary>
-        /// <typeparam name="T">The type of data in the array.</typeparam>
-        /// <param name="data">The array to copy.</param>
-        /// <returns>The native memory block containing the copied data.</returns>
-        public static MemoryBlock FromArray<T>(T[] data) where T : struct {
-            if (data == null || data.Length == 0)
-                throw new ArgumentNullException("data");
+		/// <summary>
+		/// Copies a managed array into a native graphics memory block.
+		/// </summary>
+		/// <typeparam name="T">The type of data in the array.</typeparam>
+		/// <param name="data">The array to copy.</param>
+		/// <returns>The native memory block containing the copied data.</returns>
+		public static MemoryBlock FromArray<T>(T[] data) where T : struct
+		{
+			if (data == null || data.Length == 0)
+				throw new ArgumentNullException("data");
 
-            var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            var block = new MemoryBlock(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf<T>() * data.Length);
+			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+#if NET_CORE
+			var block = new MemoryBlock(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf<T>() * data.Length);
+#else
+			var block = new MemoryBlock(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf(typeof(T)) * data.Length);
+#endif
 
-            gcHandle.Free();
-            return block;
-        }
+			gcHandle.Free();
+			return block;
+		}
 
-        /// <summary>
-        /// Creates a reference to the given data.
-        /// </summary>
-        /// <typeparam name="T">The type of data in the array.</typeparam>
-        /// <param name="data">The array to reference.</param>
-        /// <returns>The native memory block referring to the data.</returns>
-        /// <remarks>
-        /// The array must not be modified for at least 2 rendered frames.
-        /// </remarks>
-        public static MemoryBlock MakeRef<T>(T[] data) where T : struct {
-            if (data == null || data.Length == 0)
-                throw new ArgumentNullException("data");
+		/// <summary>
+		/// Creates a reference to the given data.
+		/// </summary>
+		/// <typeparam name="T">The type of data in the array.</typeparam>
+		/// <param name="data">The array to reference.</param>
+		/// <returns>The native memory block referring to the data.</returns>
+		/// <remarks>
+		/// The array must not be modified for at least 2 rendered frames.
+		/// </remarks>
+		public static MemoryBlock MakeRef<T>(T[] data) where T : struct
+		{
+			if (data == null || data.Length == 0)
+				throw new ArgumentNullException("data");
 
-            var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-            return MakeRef(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf<T>() * data.Length, GCHandle.ToIntPtr(gcHandle), ReleaseHandleCallback);
-        }
+			var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+#if NET_CORE
+			return MakeRef(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf<T>() * data.Length, GCHandle.ToIntPtr(gcHandle), ReleaseHandleCallback);
+#else
+			return MakeRef(gcHandle.AddrOfPinnedObject(), Marshal.SizeOf(typeof(T)) * data.Length, GCHandle.ToIntPtr(gcHandle), ReleaseHandleCallback);
+#endif
+		}
 
         /// <summary>
         /// Makes a reference to the given memory block.

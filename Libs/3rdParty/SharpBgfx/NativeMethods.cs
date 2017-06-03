@@ -2,11 +2,13 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
+#if NET_CORE
 namespace System.Security {
     // Keep this around until .NET Core gets an actual implementation of it
     class SuppressUnmanagedCodeSecurity : Attribute {
     }
 }
+#endif
 
 namespace SharpBgfx {
     [SuppressUnmanagedCodeSecurity]
