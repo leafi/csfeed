@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace SharpBgfx {
     /// <summary>
@@ -14,7 +15,7 @@ namespace SharpBgfx {
         /// <remarks>
         /// If the error type is not <see cref="ErrorType.DebugCheck"/>, bgfx is in an
         /// unrecoverable state and the application should terminate.
-        ///
+        /// 
         /// This method can be called from any thread.
         /// </remarks>
         void ReportError (ErrorType errorType, string message);
@@ -107,7 +108,7 @@ namespace SharpBgfx {
             if (savedDelegates != null)
                 throw new InvalidOperationException("Callbacks should only be initialized once; bgfx can only deal with one set at a time.");
 
-            var memory = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CallbackShim)));
+            var memory = Marshal.AllocHGlobal(Marshal.SizeOf<CallbackShim>());
             var shim = (CallbackShim*)memory;
             var saver = new DelegateSaver(handler, shim);
 
@@ -130,30 +131,39 @@ namespace SharpBgfx {
             Marshal.FreeHGlobal(shimMemory);
         }
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
         delegate void ReportErrorHandler (IntPtr thisPtr, ErrorType errorType, string message);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
         delegate void ReportDebugHandler (IntPtr thisPtr, string fileName, ushort line, string format, IntPtr args);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate int GetCachedSizeHandler (IntPtr thisPtr, long id);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate bool GetCacheEntryHandler (IntPtr thisPtr, long id, IntPtr data, int size);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void SetCacheEntryHandler (IntPtr thisPtr, long id, IntPtr data, int size);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Ansi)]
         delegate void SaveScreenShotHandler (IntPtr thisPtr, string path, int width, int height, int pitch, IntPtr data, int size, [MarshalAs(UnmanagedType.U1)] bool flipVertical);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void CaptureStartedHandler (IntPtr thisPtr, int width, int height, int pitch, TextureFormat format, [MarshalAs(UnmanagedType.U1)] bool flipVertical);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void CaptureFinishedHandler (IntPtr thisPtr);
 
+        [SuppressUnmanagedCodeSecurity]
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         delegate void CaptureFrameHandler (IntPtr thisPtr, IntPtr data, int size);
 

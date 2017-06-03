@@ -1,24 +1,14 @@
-﻿using Csfeed;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SharpBgfx {
     /// <summary>
     /// Managed interface to the bgfx graphics library.
     /// </summary>
     public unsafe static class Bgfx {
-        /// <summary>
-        /// Checks for available space to allocate transient index and vertex buffers.
-        /// </summary>
-        /// <param name="vertexCount">The number of vertices to allocate.</param>
-        /// <param name="layout">The layout of each vertex.</param>
-        /// <param name="indexCount">The number of indices to allocate.</param>
-        /// <returns><c>true</c> if there is sufficient space for both vertex and index buffers.</returns>
-        public static bool CheckAvailableTransientBufferSpace (int vertexCount, VertexLayout layout, int indexCount) {
-            return NativeMethods.bgfx_check_avail_transient_buffers(vertexCount, ref layout.data, indexCount);
-        }
-
         /// <summary>
         /// Attempts to allocate both a transient vertex buffer and index buffer.
         /// </summary>
@@ -94,31 +84,31 @@ namespace SharpBgfx {
         /// <summary>
         /// Swizzles an RGBA8 image to BGRA8.
         /// </summary>
+        /// <param name="destination">The destination image data.</param>
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="pitch">The pitch of the image (in bytes).</param>
         /// <param name="source">The source image data.</param>
-        /// <param name="destination">The destination image data.</param>
         /// <remarks>
         /// This method can operate in-place on the image (i.e. src == dst).
         /// </remarks>
-        public static void ImageSwizzleBgra8 (int width, int height, int pitch, IntPtr source, IntPtr destination) {
-            NativeMethods.bgfx_image_swizzle_bgra8(width, height, pitch, source, destination);
+        public static void ImageSwizzleBgra8(IntPtr destination, int width, int height, int pitch, IntPtr source) {
+            NativeMethods.bgfx_image_swizzle_bgra8(destination, width, height, pitch, source);
         }
 
         /// <summary>
         /// Downsamples an RGBA8 image with a 2x2 pixel average filter.
         /// </summary>
+        /// <param name="destination">The destination image data.</param>
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="pitch">The pitch of the image (in bytes).</param>
         /// <param name="source">The source image data.</param>
-        /// <param name="destination">The destination image data.</param>
         /// <remarks>
         /// This method can operate in-place on the image (i.e. src == dst).
         /// </remarks>
-        public static void ImageRgba8Downsample2x2 (int width, int height, int pitch, IntPtr source, IntPtr destination) {
-            NativeMethods.bgfx_image_rgba8_downsample_2x2(width, height, pitch, source, destination);
+        public static void ImageRgba8Downsample2x2 (IntPtr destination, int width, int height, int pitch, IntPtr source) {
+            NativeMethods.bgfx_image_rgba8_downsample_2x2(destination, width, height, pitch, source);
         }
 
         /// <summary>
@@ -226,7 +216,7 @@ namespace SharpBgfx {
                 backend,
                 (ushort)adapter.Vendor,
                 (ushort)adapter.DeviceId,
-                CallbackShim.CreateShim(callbackHandler),
+                CallbackShim.CreateShim(callbackHandler ?? new DefaultCallbackHandler()),
                 IntPtr.Zero
             );
         }
@@ -248,7 +238,7 @@ namespace SharpBgfx {
         /// <param name="backend">The backend for which to retrieve a name.</param>
         /// <returns>The friendly name of the specified backend.</returns>
         public static string GetBackendName (RendererBackend backend) {
-            return ((IntPtr)NativeMethods.bgfx_get_renderer_name(backend)).ReadASCIIZString();
+            return Marshal.PtrToStringAnsi(new IntPtr(NativeMethods.bgfx_get_renderer_name(backend)));
         }
 
         /// <summary>
@@ -880,8 +870,17 @@ namespace SharpBgfx {
         /// Requests that a screenshot be saved. The ScreenshotTaken event will be fired to save the result.
         /// </summary>
         /// <param name="filePath">The file path that will be passed to the callback event.</param>
-        public static void SaveScreenShot (string filePath) {
-            NativeMethods.bgfx_save_screen_shot(filePath);
+        public static void RequestScreenShot(string filePath) {
+            NativeMethods.bgfx_request_screen_shot(ushort.MaxValue, filePath);
+        }
+
+        /// <summary>
+        /// Requests that a screenshot be saved. The ScreenshotTaken event will be fired to save the result.
+        /// </summary>
+        /// <param name="frameBuffer">The frame buffer to save.</param>
+        /// <param name="filePath">The file path that will be passed to the callback event.</param>
+        public static void RequestScreenShot (FrameBuffer frameBuffer, string filePath) {
+            NativeMethods.bgfx_request_screen_shot(frameBuffer.handle, filePath);
         }
 
         /// <summary>
@@ -916,6 +915,32 @@ namespace SharpBgfx {
         /// <param name="backFace">The stencil state to use for back faces.</param>
         public static void SetStencil (StencilFlags frontFace, StencilFlags backFace) {
             NativeMethods.bgfx_set_stencil((uint)frontFace, (uint)backFace);
+        }
+
+        class DefaultCallbackHandler : ICallbackHandler {
+            public void CaptureStarted(int width, int height, int pitch, TextureFormat format, bool flipVertical) {}
+            public void CaptureFrame(IntPtr data, int size) {}
+            public void CaptureFinished() {}
+            public int GetCachedSize(long id) { return 0; }
+            public bool GetCacheEntry(long id, IntPtr data, int size) { return false; }
+            public void SetCacheEntry(long id, IntPtr data, int size) {}
+            public void SaveScreenShot(string path, int width, int height, int pitch, IntPtr data, int size, bool flipVertical) {}
+
+            public void ReportDebug(string fileName, int line, string format, IntPtr args) {
+                sbyte* buffer = stackalloc sbyte[1024];
+                NativeMethods.bgfx_vsnprintf(buffer, new IntPtr(1024), format, args);
+                Debug.Write(Marshal.PtrToStringAnsi(new IntPtr(buffer)));
+            }
+
+            public void ReportError(ErrorType errorType, string message) {
+                if (errorType == ErrorType.DebugCheck)
+                    Debug.Write(message);
+                else {
+                    Debug.Write(string.Format("{0}: {1}", errorType, message));
+                    Debugger.Break();
+                    Environment.Exit(1);
+                }
+            }
         }
     }
 }

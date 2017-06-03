@@ -439,6 +439,55 @@ namespace SharpBgfx {
             get { return data->WaitSubmit; }
         }
 
+        /// <summary>
+        /// The number of draw calls submitted.
+        /// </summary>
+        public int DrawCallsSubmitted {
+            get { return data->NumDraw; }
+        }
+
+        /// <summary>
+        /// The number of compute calls submitted.
+        /// </summary>
+        public int ComputeCallsSubmitted {
+            get { return data->NumCompute; }
+        }
+
+        /// <summary>
+        /// Maximum observed GPU driver latency.
+        /// </summary>
+        public int MaxGpuLatency {
+            get { return data->MaxGpuLatency; }
+        }
+
+        /// <summary>
+        /// The width of the back buffer.
+        /// </summary>
+        public int BackbufferWidth {
+            get { return data->Width; }
+        }
+
+        /// <summary>
+        /// The height of the back buffer.
+        /// </summary>
+        public int BackbufferHeight {
+            get { return data->Height; }
+        }
+
+        /// <summary>
+        /// The width of the debug text buffer.
+        /// </summary>
+        public int TextBufferWidth {
+            get { return data->TextWidth; }
+        }
+
+        /// <summary>
+        /// The height of the debug text buffer.
+        /// </summary>
+        public int TextBufferHeight {
+            get { return data->TextHeight; }
+        }
+
         internal PerfStats (Stats* data) {
             this.data = data;
         }
@@ -453,6 +502,13 @@ namespace SharpBgfx {
             public long GpuTimerFrequency;
             public long WaitRender;
             public long WaitSubmit;
+            public int NumDraw;
+            public int NumCompute;
+            public int MaxGpuLatency;
+            public ushort Width;
+            public ushort Height;
+            public ushort TextWidth;
+            public ushort TextHeight;
         }
 #pragma warning restore 649
     }
