@@ -101,6 +101,7 @@
     <Compile Include="BezCrv.cs" />
     <Compile Include="Paint2D\Painter.cs" />
     <Compile Include="Paint2D\Fontify.cs" />
+    <Compile Include="Paint2D\Shed.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />

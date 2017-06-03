@@ -2,17 +2,24 @@
 set -e
 
 # always use platform linux for glsl
-# ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type f --platform linux --varyingdef "varyingSrcPath" -i libs/bgfx/shaderc/common
-# ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type v --platform linux --varyingdef "varyingSrcPath" -i libs/bgfx/shaderc/common
+# ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type f --platform linux --varyingdef "varyingSrcPath" -i Natives/tools/bgfx/common
+# ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type v --platform linux --varyingdef "varyingSrcPath" -i Natives/tools/bgfx/common
 
 cd shaders/src
 cd ../..
 
 mkdir -p shaders/bin/glsl
+touch shaders/bin/noerroryeah
+rm shaders/bin/*
+touch shaders/bin/glsl/noerroryeah
+rm shaders/bin/glsl/*
+
 # hmm... '--platform asm.js' output seems identical to '--platform linux' output
 #mkdir -p shaders/bin/webgl
 
 mkdir -p shaders/tmp
+touch shaders/tmp/noerroryeah
+rm shaders/tmp/*
 
 luajit shaders/unscx.lua shaders/src/simple.scx
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.vs.sc" -o "shaders/bin/glsl/simple.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i Natives/tools/bgfx/common
