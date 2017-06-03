@@ -5,7 +5,7 @@ namespace Csfeed
 {
 	public static unsafe class Glfw
 	{
-		const string glfwDll = "libglfw";
+		const string glfwDll = "glfw";
 
 		#pragma warning disable 0414
 

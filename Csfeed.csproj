@@ -6,7 +6,7 @@
     <ProjectGuid>{8C5E21F0-AF45-4098-80AA-E99EF51F2324}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Csfeed</RootNamespace>
-    <AssemblyName>csfeed</AssemblyName>
+    <AssemblyName>Csfeed</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
@@ -145,6 +145,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Natives\libopusfile.so.0">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Csfeed.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

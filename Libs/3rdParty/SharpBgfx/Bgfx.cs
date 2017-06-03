@@ -216,7 +216,7 @@ namespace SharpBgfx {
                 backend,
                 (ushort)adapter.Vendor,
                 (ushort)adapter.DeviceId,
-                CallbackShim.CreateShim(callbackHandler ?? new DefaultCallbackHandler()),
+				CallbackShim.CreateShim(callbackHandler),
                 IntPtr.Zero
             );
         }
