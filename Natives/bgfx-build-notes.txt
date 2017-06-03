@@ -1,8 +1,8 @@
-Update bgfx x64 binaries (source 2017-04-23, built on 2017-06-03)
+Update bgfx x64 binaries (source 2017-06-03, built on 2017-06-03)
 
-https://github.com/bkaradzic/bx/commit/f839267a41e51dd4f9f13b8ac1d348db3f42b9f1
-https://github.com/bkaradzic/bimg/commit/69512a3e6fbfcbfe142accf601458043f733b49b
-https://github.com/bkaradzic/bgfx/commit/6f224a832b41a5fd4416f645a5302f6cb415b5a8
+https://github.com/bkaradzic/bx/commit/2d7e581dfe58b40bf9779dfc2710c71f195ee517
+https://github.com/bkaradzic/bimg/commit/4ec629bfaab1b0a0e9c4004795ad764e88b6060f
+https://github.com/bkaradzic/bgfx/commit/cf6087bdb6bc4213e34fd02d0d27895c554bf01d
 
 Tools are release64. Shared libs are debug64, release64.
 
@@ -30,8 +30,8 @@ Windows: Windows 10, Visual Studio Community 2015 Update 2, cmd.exe:
 
 
 tools/bgfx/common sources:
-  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/src/bgfx_compute.sh
-  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/src/bgfx_shader.sh
-  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/examples/common/common.sh
-  https://github.com/bkaradzic/bgfx/blob/6f224a832b41a5fd4416f645a5302f6cb415b5a8/examples/common/shaderlib.sh
+  https://github.com/bkaradzic/bgfx/blob/master/src/bgfx_compute.sh
+  https://github.com/bkaradzic/bgfx/blob/master/src/bgfx_shader.sh
+  https://github.com/bkaradzic/bgfx/blob/master/examples/common/common.sh
+  https://github.com/bkaradzic/bgfx/blob/master/examples/common/shaderlib.sh
 
