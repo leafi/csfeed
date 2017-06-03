@@ -132,7 +132,7 @@ namespace Csfeed
 			}
 
 			Bgfx.SetRenderState(RenderState.ColorWrite | RenderState.AlphaWrite | RenderState.BlendAlpha | RenderState.NoCulling);
-			Bgfx.SetVertexBuffer(tvb.vertexBuffer, 0, tvb.vidx);
+			Bgfx.SetVertexBuffer(0, tvb.vertexBuffer, 0, tvb.vidx);
 			Bgfx.Submit(VIEW_ID, colorShader);
 		}
     }
