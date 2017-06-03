@@ -15,9 +15,14 @@ mkdir -p shaders/bin/glsl
 mkdir -p shaders/tmp
 
 luajit shaders/unscx.lua shaders/src/simple.scx
-./Native/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.vs.sc" -o "shaders/bin/glsl/simple.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i libs/bgfx/shaderc/common
-./Native/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.fs.sc" -o "shaders/bin/glsl/simple.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i libs/bgfx/shaderc/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.vs.sc" -o "shaders/bin/glsl/simple.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.fs.sc" -o "shaders/bin/glsl/simple.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i Natives/tools/bgfx/common
 
 luajit shaders/unscx.lua shaders/src/font.scx
-./Native/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.vs.sc" -o "shaders/bin/glsl/font.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i libs/bgfx/shaderc/common
-./Native/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.fs.sc" -o "shaders/bin/glsl/font.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i libs/bgfx/shaderc/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.vs.sc" -o "shaders/bin/glsl/font.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.fs.sc" -o "shaders/bin/glsl/font.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
+
+
+luajit shaders/unscx.lua shaders/src/color.scx
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.vs.sc" -o "shaders/bin/glsl/color.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.fs.sc" -o "shaders/bin/glsl/color.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common

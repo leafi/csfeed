@@ -39,6 +39,7 @@
     <Reference Include="System.ValueTuple">
       <HintPath>packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -92,16 +93,20 @@
     <Compile Include="Libs\3rdParty\SharpFont\Internal\SbitTable.cs" />
     <Compile Include="Libs\3rdParty\SharpFont\Internal\SfntTables.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="LoadMissingImplicit.cs" />
     <Compile Include="Engine\IEngine.cs" />
     <Compile Include="Engine\DesktopEngine.cs" />
     <Compile Include="Engine\WebEngine.cs" />
     <Compile Include="Engine\GlfwCursors.cs" />
     <Compile Include="Engine\InputEvents.cs" />
+    <Compile Include="BezCrv.cs" />
+    <Compile Include="Paint2D\Painter.cs" />
+    <Compile Include="Paint2D\Fontify.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
     <Folder Include="Engine\" />
+    <Folder Include="Paint2D\" />
+    <Folder Include="shaders\src\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
