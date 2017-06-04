@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using SharpBgfx;
@@ -58,20 +57,12 @@ namespace Csfeed.Paint2D
 
 	public class Fontify : IDisposable
     {
-		private Matrix4x4 projectionMatrix;
-		private Matrix4x4 viewMatrix = Matrix4x4.Identity;
-		private Matrix4x4 identityMatrix = Matrix4x4.Identity;
-
 		private FontGlyphAtlas glyphAtlas = null;
 		private TextAnalyzer textAnalyzer = null;
 		private RectangleF whiteAtlasUV = default(RectangleF);
 
-		private Uniform fontSampler = new Uniform("s_texColor", UniformType.Int1);
-		private SharpBgfx.Program fontShader;
-		private VertexLayout vertexLayout = new VertexLayout();
-
+		public RectangleF WhiteAtlasUV => whiteAtlasUV;
 		public Texture Texture => glyphAtlas.Texture;
-		public SharpBgfx.Program Shader => fontShader;
 
 		public unsafe Fontify()
         {
@@ -101,18 +92,6 @@ namespace Csfeed.Paint2D
 				(whiteAtlasRect.X + whiteAtlasRect.Width - 4) / ((float)glyphAtlas.Width),
 				(whiteAtlasRect.Y + whiteAtlasRect.Height - 4) / ((float)glyphAtlas.Height)
 			);
-
-			vertexLayout.Begin();
-			vertexLayout.Add(VertexAttributeUsage.Position, 2, VertexAttributeType.Float);
-			vertexLayout.Add(VertexAttributeUsage.TexCoord0, 2, VertexAttributeType.Float);
-			vertexLayout.Add(VertexAttributeUsage.Color0, 4, VertexAttributeType.Float);
-			vertexLayout.End();
-
-			projectionMatrix = Matrix4x4.CreateOrthographicOffCenter(0f, 1280f, 720f, 0f, 0f, 2f);
-
-			var vs = new Shader(MemoryBlock.FromArray<byte>(File.ReadAllBytes("../../shaders/bin/glsl/font.scx.vshader")));
-			var fs = new Shader(MemoryBlock.FromArray<byte>(File.ReadAllBytes("../../shaders/bin/glsl/font.scx.fshader")));
-			fontShader = new SharpBgfx.Program(vs, fs, true);
         }
 
 		public void Dispose()
@@ -143,21 +122,6 @@ namespace Csfeed.Paint2D
 			return ValueTuple.Create(layout, measureX, miny, maxh);
 		}
 
-		private unsafe void putVertex2f(TVBVector4 tvb, float x, float y, float u, float v, Vector4 color)
-		{
-			if (tvb.vidx >= TVBVector4.MAX_VERTS) {
-				throw new Exception("out of verts (fontify, tvb)");
-			}
-			tvb.vptr->X = x;
-			tvb.vptr->Y = y;
-			tvb.vptr->Z = u;
-			tvb.vptr->W = v;
-			tvb.vptr++;
-			*tvb.vptr = color;
-			tvb.vptr++;
-			tvb.vidx++;
-		}
-
 		private void putRect(TVBVector4 tvb, RectangleF rectf, RectangleF fontUV, Vector4 color)
 		{
 			// old Blamalama code used to clip font uv..
@@ -167,13 +131,13 @@ namespace Csfeed.Paint2D
 			float v1 = fontUV.Top;
 			float v2 = fontUV.Bottom;
 
-			putVertex2f(tvb, rectf.Left, rectf.Bottom, u1, v2, color);
-			putVertex2f(tvb, rectf.Right, rectf.Bottom, u2, v2, color);
-			putVertex2f(tvb, rectf.Right, rectf.Top, u2, v1, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Left, rectf.Bottom, u1, v2, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Right, rectf.Bottom, u2, v2, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Right, rectf.Top, u2, v1, color);
 
-			putVertex2f(tvb, rectf.Right, rectf.Top, u2, v1, color);
-			putVertex2f(tvb, rectf.Left, rectf.Top, u1, v1, color);
-			putVertex2f(tvb, rectf.Left, rectf.Bottom, u1, v2, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Right, rectf.Top, u2, v1, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Left, rectf.Top, u1, v1, color);
+			Sheds.Font.PutVertexXYUVColor(tvb, rectf.Left, rectf.Bottom, u1, v2, color);
 		}
 
         private void stringDrawForTT(TVBVector4 tvb, ValueTuple<TextLayout, float, int, int> tt, int x, int y, Vector4 color)
@@ -191,7 +155,7 @@ namespace Csfeed.Paint2D
 
 		public TVBVector4 DrawString(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color)
 		{
-			var tvb = new TVBVector4(vertexLayout);
+			var tvb = new TVBVector4(Sheds.Font.VertexLayout);
 			var tt = doStringStuff(font, text);
 			stringDrawForTT(tvb, tt, x, y, color);
 			return tvb;
@@ -209,7 +173,7 @@ namespace Csfeed.Paint2D
 
 		public TVBVector4 DrawStringDotDotDot(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color, int maxWidth)
 		{
-			var tvb = new TVBVector4(vertexLayout);
+			var tvb = new TVBVector4(Sheds.Font.VertexLayout);
 			var tt = doStringStuff(font, $"{text}...", true, maxWidth);
 			stringDrawForTT(tvb, tt, x, y, color);
 			return tvb;

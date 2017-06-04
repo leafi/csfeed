@@ -103,12 +103,13 @@
     <Compile Include="Paint2D\Fontify.cs" />
     <Compile Include="Paint2D\Shed.cs" />
     <Compile Include="Paint2D\ViewHelper.cs" />
+    <Compile Include="UI\Painter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
     <Folder Include="Engine\" />
     <Folder Include="Paint2D\" />
-    <Folder Include="shaders\src\" />
+    <Folder Include="UI\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
