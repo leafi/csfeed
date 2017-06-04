@@ -8,26 +8,22 @@ set -e
 cd shaders/src
 cd ../..
 
+rm -r shaders/bin
 mkdir -p shaders/bin/glsl
-touch shaders/bin/noerroryeah
-rm shaders/bin/*
-touch shaders/bin/glsl/noerroryeah
-rm shaders/bin/glsl/*
 
 # hmm... '--platform asm.js' output seems identical to '--platform linux' output
 #mkdir -p shaders/bin/webgl
 
+rm -r shaders/tmp
 mkdir -p shaders/tmp
-touch shaders/tmp/noerroryeah
-rm shaders/tmp/*
 
-luajit shaders/unscx.lua shaders/src/simple.scx
-./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.vs.sc" -o "shaders/bin/glsl/simple.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i Natives/tools/bgfx/common
-./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/simple.fs.sc" -o "shaders/bin/glsl/simple.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/simple.varying.sc" -i Natives/tools/bgfx/common
+luajit shaders/unscx.lua shaders/src/texcolor.scx
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/texcolor.vs.sc" -o "shaders/bin/glsl/texcolor.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/texcolor.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/texcolor.fs.sc" -o "shaders/bin/glsl/texcolor.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/texcolor.varying.sc" -i Natives/tools/bgfx/common
 
 luajit shaders/unscx.lua shaders/src/font.scx
-./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.vs.sc" -o "shaders/bin/glsl/font.vs.bin" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
-./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.fs.sc" -o "shaders/bin/glsl/font.fs.bin" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.vs.sc" -o "shaders/bin/glsl/font.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.fs.sc" -o "shaders/bin/glsl/font.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
 
 
 luajit shaders/unscx.lua shaders/src/color.scx

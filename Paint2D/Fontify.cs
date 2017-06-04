@@ -143,9 +143,9 @@ namespace Csfeed.Paint2D
 			return ValueTuple.Create(layout, measureX, miny, maxh);
 		}
 
-		private unsafe void putVertex2f(TVB tvb, float x, float y, float u, float v, Vector4 color)
+		private unsafe void putVertex2f(TVBVector4 tvb, float x, float y, float u, float v, Vector4 color)
 		{
-			if (tvb.vidx >= TVB.MAX_VERTS) {
+			if (tvb.vidx >= TVBVector4.MAX_VERTS) {
 				throw new Exception("out of verts (fontify, tvb)");
 			}
 			tvb.vptr->X = x;
@@ -158,7 +158,7 @@ namespace Csfeed.Paint2D
 			tvb.vidx++;
 		}
 
-		private void putRect(TVB tvb, RectangleF rectf, RectangleF fontUV, Vector4 color)
+		private void putRect(TVBVector4 tvb, RectangleF rectf, RectangleF fontUV, Vector4 color)
 		{
 			// old Blamalama code used to clip font uv..
 
@@ -176,7 +176,7 @@ namespace Csfeed.Paint2D
 			putVertex2f(tvb, rectf.Left, rectf.Bottom, u1, v2, color);
 		}
 
-        private void stringDrawForTT(TVB tvb, ValueTuple<TextLayout, float, int, int> tt, int x, int y, Vector4 color)
+        private void stringDrawForTT(TVBVector4 tvb, ValueTuple<TextLayout, float, int, int> tt, int x, int y, Vector4 color)
 		{
 			for (var i = 0; i < tt.Item1.Stuff.Count; i++) {
 				var ting = tt.Item1.Stuff[i];
@@ -189,9 +189,9 @@ namespace Csfeed.Paint2D
 			}
 		}
 
-		public TVB DrawString(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color)
+		public TVBVector4 DrawString(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color)
 		{
-			var tvb = new TVB(vertexLayout);
+			var tvb = new TVBVector4(vertexLayout);
 			var tt = doStringStuff(font, text);
 			stringDrawForTT(tvb, tt, x, y, color);
 			return tvb;
@@ -207,9 +207,9 @@ namespace Csfeed.Paint2D
 			return MeasureString(Fonts.MaterialDesignIcons, s);
 		}*/
 
-		public TVB DrawStringDotDotDot(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color, int maxWidth)
+		public TVBVector4 DrawStringDotDotDot(int x, int y, ValueTuple<FontFace, float> font, string text, Vector4 color, int maxWidth)
 		{
-			var tvb = new TVB(vertexLayout);
+			var tvb = new TVBVector4(vertexLayout);
 			var tt = doStringStuff(font, $"{text}...", true, maxWidth);
 			stringDrawForTT(tvb, tt, x, y, color);
 			return tvb;

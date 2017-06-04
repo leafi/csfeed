@@ -11,6 +11,7 @@ namespace Csfeed.Paint2D
 
 		protected SharpBgfx.Program program;
 		protected VertexLayout vertexLayout;
+		protected RenderState renderState = RenderState.ColorWrite | RenderState.AlphaWrite | RenderState.BlendAlpha | RenderState.NoCulling;
 
 		public SharpBgfx.Program Program {
 			get {
@@ -23,6 +24,13 @@ namespace Csfeed.Paint2D
 			get {
 				checkInit();
 				return vertexLayout;
+			}
+		}
+
+		public RenderState RenderState {
+			get {
+				checkInit();
+				return renderState;
 			}
 		}
 
@@ -51,7 +59,7 @@ namespace Csfeed.Paint2D
 
 	public interface IPutVertexXYUVColor
 	{
-		void PutVertexXYUVColor(TVB tvb, float x, float y, float u, float v, Vector4 color);
+		void PutVertexXYUVColor(TVBVector4 tvb, float x, float y, float u, float v, Vector4 color);
 	}
 
 	public class ColorShed : Shed, IPutVertexXYColor
@@ -93,10 +101,19 @@ namespace Csfeed.Paint2D
 
 	public abstract class XYUVColorShed : Shed, IPutVertexXYUVColor
 	{
-		public unsafe void PutVertexXYUVColor(TVB tvb, float x, float y, float u, float v, Vector4 color)
+		protected Uniform textureSampler;
+
+		public Uniform TextureSampler {
+			get {
+				checkInit();
+				return textureSampler;
+			}
+		}
+
+		public unsafe void PutVertexXYUVColor(TVBVector4 tvb, float x, float y, float u, float v, Vector4 color)
 		{
 			checkInit();
-			if (tvb.vidx >= TVB.MAX_VERTS) {
+			if (tvb.vidx >= TVBVector4.MAX_VERTS) {
 				throw new Exception("too many verts");
 			}
 
@@ -124,6 +141,8 @@ namespace Csfeed.Paint2D
 			vertexLayout.Add(VertexAttributeUsage.TexCoord0, 2, VertexAttributeType.Float);
 			vertexLayout.Add(VertexAttributeUsage.Color0, 4, VertexAttributeType.Float);
 			vertexLayout.End();
+
+			textureSampler = new Uniform("s_texColor", UniformType.Int1);
 		}
 	}
 

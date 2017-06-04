@@ -11,6 +11,7 @@ namespace Csfeed.Paint2D
 
 		private static Matrix4x4 projectionMatrix;
 		private static Matrix4x4 viewMatrix = Matrix4x4.Identity;
+		private static Matrix4x4 identityMatrix = Matrix4x4.Identity;
 
 		public unsafe static void PrepView2DNative(byte viewId, float zNear = 0f, float zFar = 2f)
 		{
@@ -29,6 +30,27 @@ namespace Csfeed.Paint2D
 					Bgfx.SetViewTransform(viewId, pView, pProj);
 				}
 			}
+		}
+
+		public unsafe static void Submit(byte viewId, ColorShed shed, TVB tvb)
+		{
+			fixed (float* pMdl = &(identityMatrix.M11)) {
+				Bgfx.SetTransform(pMdl);
+			}
+			Bgfx.SetRenderState(shed.RenderState);
+			Bgfx.SetVertexBuffer(0, tvb.vertexBuffer, 0, tvb.vidx);
+			Bgfx.Submit(viewId, shed.Program);
+		}
+
+		public unsafe static void Submit(byte viewId, XYUVColorShed shed, TVB tvb, Texture texture)
+		{
+			fixed (float* pMdl = &(identityMatrix.M11)) {
+				Bgfx.SetTransform(pMdl);
+			}
+			Bgfx.SetRenderState(shed.RenderState);
+			Bgfx.SetVertexBuffer(0, tvb.vertexBuffer, 0, tvb.vidx);
+			Bgfx.SetTexture(0, shed.TextureSampler, texture);
+			Bgfx.Submit(viewId, shed.Program);
 		}
     }
 }

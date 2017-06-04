@@ -4,15 +4,19 @@ using SharpBgfx;
 
 namespace Csfeed.Paint2D
 {
-	public unsafe class TVB
+	public abstract class TVB
+	{
+		public TransientVertexBuffer vertexBuffer;
+		public int vidx;
+	}
+
+	public unsafe class TVBVector4 : TVB
 	{
 		public const int MAX_VERTS = 3000;
 
-		public TransientVertexBuffer vertexBuffer = default(TransientVertexBuffer);
 		public Vector4* vptr;
-		public int vidx;
 
-		public TVB(VertexLayout vertexLayout)
+		public TVBVector4(VertexLayout vertexLayout)
 		{
 			vertexBuffer = new TransientVertexBuffer(MAX_VERTS, vertexLayout);
 			vptr = (Vector4*)vertexBuffer.Data;
@@ -20,13 +24,11 @@ namespace Csfeed.Paint2D
 		}
 	}
 
-	public unsafe class TVBFloat
+	public unsafe class TVBFloat : TVB
 	{
 		public const int MAX_VERTS = 3000;
 
-		public TransientVertexBuffer vertexBuffer = default(TransientVertexBuffer);
 		public float* vptr;
-		public int vidx;
 
 		public TVBFloat(VertexLayout vertexLayout)
 		{
@@ -40,9 +42,9 @@ namespace Csfeed.Paint2D
     {
 		private static Fontify fontify = null;
 
-        public Painter()
+		public Painter()
         {
-			if (fontify != null) {
+			if (fontify == null) {
 				fontify = new Fontify();
 			}
         }
