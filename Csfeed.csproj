@@ -102,6 +102,7 @@
     <Compile Include="Paint2D\Painter.cs" />
     <Compile Include="Paint2D\Fontify.cs" />
     <Compile Include="Paint2D\Shed.cs" />
+    <Compile Include="Paint2D\ViewHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
