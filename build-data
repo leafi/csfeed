@@ -50,3 +50,6 @@ luajit shaders/unscx.lua shaders/src/color.scx
 # 2D uncompressed float (HDR) example
 # ./Natives/tools/bgfx/texturec-linux64 -f "data/example.hdr" -o "data/example.hdr.ktx" -t RGBA16F
 
+echo "texturec: data/guide.png -> data/guide.png.ktx"
+./Natives/tools/bgfx/texturec-linux64 -f "data/guide.png" -o "data/guide.png.ktx" -t RGBA8
+

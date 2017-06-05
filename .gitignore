@@ -5,4 +5,4 @@ packages/
 *.userprefs
 shaders/tmp/
 shaders/bin/
-
+data/*.ktx

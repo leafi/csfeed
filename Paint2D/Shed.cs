@@ -78,7 +78,7 @@ namespace Csfeed.Paint2D
 		public unsafe void PutVertexXYColor(TVBFloat tvb, float x, float y, Vector4 color)
 		{
 			checkInit();
-			if (tvb.vidx >= TVBFloat.MAX_VERTS) {
+			if (tvb.vidx >= tvb.MaxVerts) {
 				throw new Exception("too many verts");
 			}
 
@@ -113,7 +113,7 @@ namespace Csfeed.Paint2D
 		public unsafe void PutVertexXYUVColor(TVBVector4 tvb, float x, float y, float u, float v, Vector4 color)
 		{
 			checkInit();
-			if (tvb.vidx >= TVBVector4.MAX_VERTS) {
+			if (tvb.vidx >= tvb.MaxVerts) {
 				throw new Exception("too many verts");
 			}
 

@@ -17,7 +17,7 @@ namespace Csfeed.UI
 
 		private void prepRect()
 		{
-			if ((TVB == null) || (TVB.vidx >= Paint2D.TVBVector4.MAX_VERTS - 13)) {
+			if ((TVB == null) || (TVB.vidx >= TVB.MaxVerts - 13)) {
 				maybeSubmitRect();
 				TVB = new Paint2D.TVBVector4(Paint2D.Sheds.Font.VertexLayout);
 			}

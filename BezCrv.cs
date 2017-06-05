@@ -10,9 +10,11 @@ namespace Csfeed
     public static class BezCrv
     {
 		const byte VIEW_ID = 1;
+		private static Texture tex;
 
 		public static void Load()
 		{
+			tex = Painter.LoadTexture("guide.png");
 		}
 
 		private unsafe static void putVertex2f(TVBFloat tvb, float x, float y, Vector4 color)
@@ -67,6 +69,9 @@ namespace Csfeed
 
 			ViewHelper.PrepView2DNative(VIEW_ID);
 			Bgfx.SetViewClear(VIEW_ID, ClearTargets.Color | ClearTargets.Depth, 0x232729ff, 1f, 0);
+
+			Painter.QuadTex(VIEW_ID, tex, Vector2.Zero);
+
 
 			var tvb = new TVBFloat(Sheds.Color.VertexLayout);
 			putVertex2f(tvb, 50f, 50f, new Vector4(1f, 0f, 0f, 1f));

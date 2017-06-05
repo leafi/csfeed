@@ -12,6 +12,8 @@ namespace Csfeed
 			Console.WriteLine(System.Environment.CurrentDirectory);
 			Engine = new DesktopEngine();
 
+			Paint2D.Painter.Initialize();
+
 			BezCrv.Load();
 
 			while (!Engine.WindowShouldClose) {

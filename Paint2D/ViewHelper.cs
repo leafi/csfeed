@@ -52,5 +52,26 @@ namespace Csfeed.Paint2D
 			Bgfx.SetTexture(0, shed.TextureSampler, texture);
 			Bgfx.Submit(viewId, shed.Program);
 		}
+
+		public unsafe static void Submit(byte viewId, ColorShed shed, Matrix4x4 mdlMtx, TVB tvb)
+		{
+			float* pMdl = &(mdlMtx.M11);
+			Bgfx.SetTransform(pMdl);
+
+			Bgfx.SetRenderState(shed.RenderState);
+			Bgfx.SetVertexBuffer(0, tvb.vertexBuffer, 0, tvb.vidx);
+			Bgfx.Submit(viewId, shed.Program);
+		}
+
+		public unsafe static void Submit(byte viewId, XYUVColorShed shed, Matrix4x4 mdlMtx, TVB tvb, Texture texture)
+		{
+			float* pMdl = &(mdlMtx.M11);
+			Bgfx.SetTransform(pMdl);
+
+			Bgfx.SetRenderState(shed.RenderState);
+			Bgfx.SetVertexBuffer(0, tvb.vertexBuffer, 0, tvb.vidx);
+			Bgfx.SetTexture(0, shed.TextureSampler, texture);
+			Bgfx.Submit(viewId, shed.Program);
+		}
     }
 }
