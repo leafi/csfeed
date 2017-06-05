@@ -5,6 +5,10 @@ set -e
 # ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type f --platform linux --varyingdef "varyingSrcPath" -i Natives/tools/bgfx/common
 # ./libs/bgfx/shaderc/shaderc-linux64 -f "srcPath" -o "outPath" --debug --disasm --verbose --Werror --type v --platform linux --varyingdef "varyingSrcPath" -i Natives/tools/bgfx/common
 
+######################
+# SHADERS
+######################
+
 cd shaders/src
 cd ../..
 
@@ -25,7 +29,23 @@ luajit shaders/unscx.lua shaders/src/font.scx
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.vs.sc" -o "shaders/bin/glsl/font.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/font.fs.sc" -o "shaders/bin/glsl/font.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/font.varying.sc" -i Natives/tools/bgfx/common
 
-
 luajit shaders/unscx.lua shaders/src/color.scx
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.vs.sc" -o "shaders/bin/glsl/color.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.fs.sc" -o "shaders/bin/glsl/color.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common
+
+######################
+# TEXTURES
+######################
+
+# Available texture formats: https://github.com/bkaradzic/bimg/blob/master/include/bimg/bimg.h#L51
+
+# 2D uncompressed RGBA8 example
+# ./Natives/tools/bgfx/texturec-linux64 -f "data/example2d.png" -o "data/example2d.png.ktx" -t RGBA8U
+
+# 2D uncompressed float (0.0..1.0) example
+#  (no suffix on type => Unorm (unsigned normalized float))
+# ./Natives/tools/bgfx/texturec-linux64 -f "data/examplebokeh.png" -o "data/examplebokeh.png.ktx" -t RGBA8
+
+# 2D uncompressed float (HDR) example
+# ./Natives/tools/bgfx/texturec-linux64 -f "data/example.hdr" -o "data/example.hdr.ktx" -t RGBA16F
+
