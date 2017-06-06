@@ -144,12 +144,14 @@ namespace Csfeed.Paint2D
 		{
 			for (var i = 0; i < tt.Item1.Stuff.Count; i++) {
 				var ting = tt.Item1.Stuff[i];
-				putRect(
-					tvb,
-					glyphAtlas.FixDestinationRect(new RectangleF(x + ting.DestX, y - tt.Item3 + ting.DestY, ting.Width, ting.Height)),
-					glyphAtlas.ToUV(new Rectangle(ting.SourceX, ting.SourceY, ting.Width, ting.Height)),
-					color
-				);
+				if (ting.Width > 0 && ting.Height > 0) {
+					putRect(
+						tvb,
+						glyphAtlas.FixDestinationRect(new RectangleF(x + ting.DestX, y - tt.Item3 + ting.DestY, ting.Width, ting.Height)),
+						glyphAtlas.ToUV(new Rectangle(ting.SourceX, ting.SourceY, ting.Width, ting.Height)),
+						color
+					);
+				}
 			}
 		}
 

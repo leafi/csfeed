@@ -95,5 +95,29 @@ namespace Csfeed.Paint2D
 
 			ViewHelper.Submit(viewId, Sheds.TexColor, mtx, tvb, texture);
 		}
+
+		public static void String(byte viewId, ValueTuple<SharpFont.FontFace, float> font, Vector2 xy, string text)
+		{
+			String(viewId, font, xy, text, Vector4.One);
+		}
+
+		public static void String(byte viewId, ValueTuple<SharpFont.FontFace, float> font, Vector2 xy, string text, Vector4 color)
+		{
+			var tvb = fontify.DrawString(0, 0, font, text, color);
+			var mtx = Matrix4x4.CreateTranslation(xy.X, xy.Y, 0f);
+			ViewHelper.Submit(viewId, Sheds.Font, mtx, tvb, fontify.Texture);
+		}
+
+		public static void StringDotDotDot(byte viewId, ValueTuple<SharpFont.FontFace, float> font, Vector2 xy, int maxWidth, string text)
+		{
+			StringDotDotDot(viewId, font, xy, maxWidth, text, Vector4.One);
+		}
+
+		public static void StringDotDotDot(byte viewId, ValueTuple<SharpFont.FontFace, float> font, Vector2 xy, int maxWidth, string text, Vector4 color)
+		{
+			var tvb = fontify.DrawStringDotDotDot(0, 0, font, text, color, maxWidth);
+			var mtx = Matrix4x4.CreateTranslation(xy.X, xy.Y, 0f);
+			ViewHelper.Submit(viewId, Sheds.Font, mtx, tvb, fontify.Texture);
+		}
     }
 }

@@ -11,10 +11,13 @@ namespace Csfeed
     {
 		const byte VIEW_ID = 1;
 		private static Texture tex;
+		private static ValueTuple<SharpFont.FontFace, float> font;
 
 		public static void Load()
 		{
 			tex = Painter.LoadTexture("guide.png");
+			var fontStream = File.OpenRead("../../data/fonts/Cabin-Regular.ttf");
+			font = ValueTuple.Create(new SharpFont.FontFace(fontStream), 20f);
 		}
 
 		private unsafe static void putVertex2f(TVBFloat tvb, float x, float y, Vector4 color)
@@ -78,16 +81,13 @@ namespace Csfeed
 			putVertex2f(tvb, 50f, 150f, new Vector4(0f, 1f, 0f, 1f));
 			putVertex2f(tvb, 150f, 150f, new Vector4(0f, 0f, 1f, 1f));
 
-			/*
-			putLine(tvb, new Vector2(500f, 100f), new Vector2(400f, 200f), 1f, new Vector4(1f, 1f, 1f, 1f));
-			putLine(tvb, new Vector2(500f, 400f), new Vector2(400f, 300f), 1f, new Vector4(1f, 1f, 1f, 1f));
-			putLine(tvb, new Vector2(100f, 400f), new Vector2(200f, 400f), 1f, new Vector4(1f, 1f, 1f, 1f));
-			putLine(tvb, new Vector2(200f, 460f), new Vector2(100f, 460f), 1f, new Vector4(1f, 1f, 1f, 1f));
-			*/
 
 			putQuadCurve(tvb, new Vector2(300f, 100f), new Vector2(500f, 300f), new Vector2(300f, 500f), 10, 20f, new Vector4(1f, 1f, 1f, 1f));
 
 			ViewHelper.Submit(VIEW_ID, Sheds.Color, tvb);
+
+			Painter.String(VIEW_ID, font, new Vector2(300f, 0f), "Hi there! Just testing the font system.");
+
 		}
     }
 }
