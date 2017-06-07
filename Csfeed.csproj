@@ -50,8 +50,6 @@
     <Compile Include="Libs\3rdParty\Glfw\Glfw3DelegateTypes.cs" />
     <Compile Include="Libs\3rdParty\Glfw\Glfw3Enum.cs" />
     <Compile Include="Libs\3rdParty\Glfw\Glfw3Structs.cs" />
-    <Compile Include="Libs\3rdParty\OpusfileSharp\OggOpusFile.cs" />
-    <Compile Include="Libs\3rdParty\OpusfileSharp\OpusfileTypes.cs" />
     <Compile Include="Libs\3rdParty\SharpBgfx\Bgfx.cs" />
     <Compile Include="Libs\3rdParty\SharpBgfx\Callbacks.cs" />
     <Compile Include="Libs\3rdParty\SharpBgfx\Capabilities.cs" />
@@ -134,18 +132,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Natives\libglfw.so">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Natives\libogg.0.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Natives\libopus.0.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Natives\libopusfile.0.dylib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Natives\libopusfile.so.0">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Csfeed.exe.config">
