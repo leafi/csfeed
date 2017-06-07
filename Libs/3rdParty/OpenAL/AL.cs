@@ -22,446 +22,166 @@
 #endregion
 
 using System;
-using Blamalama.OpenAL.Bindings;
+using System.Runtime.InteropServices;
+using System.Security;
 
-namespace Blamalama {
+namespace OpenAL {
 	public static partial class AL {
-        public static void Enable(ALCapability capability)
-        {
-            if (Env.OSX) {
-                OSX.alEnable(capability);
-            } else {
-                Linux.alEnable(capability);
-            }
-        }
-        public static void Disable(ALCapability caps)
-        {
-            if (Env.OSX) {
-                OSX.alDisable(caps);
-            } else {
-                Linux.alDisable(caps);
-            }
-        }
-		public static bool IsEnabled(ALCapability capability)
-		{
-			return Env.OSX ? OSX.alIsEnabled(capability) != 0 : Linux.alIsEnabled(capability) != 0;
-		}
+		private const string lib = "OpenAL32.dll";
 
-		public static string GetString(ALGetString param) {
-            if (Env.OSX) {
-                return OSX.alGetString((int)param).ReadUTF8ZString();
-            } else {
-                return Linux.alGetString((int)param).ReadUTF8ZString();
-            }
-		}
-
-        public static bool GetBoolean(ALGetInteger param) {
-            if (Env.OSX) {
-                return OSX.alGetBoolean(param);
-            } else {
-                return Linux.alGetBoolean(param);
-            }
-        }
-
-        public static int GetInteger(ALGetInteger param) {
-            if (Env.OSX) {
-                return OSX.alGetInteger(param);
-            } else {
-                return Linux.alGetInteger(param);
-            }
-        }
-
-        public static float GetFloat(ALGetFloat param) {
-            if (Env.OSX) {
-                return OSX.alGetFloat(param);
-            } else {
-                return Linux.alGetFloat(param);
-            }
-        }
-
-        public static double GetDouble(int param) {
-            if (Env.OSX) {
-                return OSX.alGetDouble(param);
-            } else {
-                return Linux.alGetDouble(param);
-            }
-        }
-
-        public static int GetError() {
-            return Env.OSX ? OSX.alGetError() : Linux.alGetError();
-        }
-
-		public static bool IsExtensionPresent(string extname)
-		{
-			return Env.OSX ? OSX.alIsExtensionPresent(extname) != 0 : Linux.alIsExtensionPresent(extname) != 0;
-		}
-
-        public static IntPtr GetProcAddress(string fname)
-        {
-            return Env.OSX ? OSX.alGetProcAddress(fname) : Linux.alGetProcAddress(fname);
-        }
-
-        public static int GetEnumValue(string ename)
-        {
-            return Env.OSX ? OSX.alGetEnumValue(ename) : Linux.alGetEnumValue(ename);
-        }
-
-        public static void Listenerf(ALListenerf param, float value)
-        {
-            if (Env.OSX) {
-                OSX.alListenerf(param, value);
-            } else {
-                Linux.alListenerf(param, value);
-            }
-        }
-
-        public static void Listener3f(ALListener3f param, float v1, float v2, float v3)
-        {
-            if (Env.OSX) {
-                OSX.alListener3f(param, v1, v2, v3);
-            } else {
-                Linux.alListener3f(param, v1, v2, v3);
-            }
-        }
-
-        public static void Listenerfv(ALListenerfv param, float[] values)
-        {
-            if (Env.OSX) {
-                OSX.alListenerfv(param, values);
-            } else {
-                Linux.alListenerfv(param, values);
-            }
-        }
-
-        public static float GetListenerf(ALListenerf param)
-        {
-            float f;
-            if (Env.OSX) {
-                OSX.alGetListenerf(param, out f);
-            } else {
-                Linux.alGetListenerf(param, out f);
-            }
-            return f;
-        }
-
-        public static Tuple<float, float, float> GetListener3f(ALListener3f param)
-        {
-            float f1, f2, f3;
-            if (Env.OSX) {
-                OSX.alGetListener3f(param, out f1, out f2, out f3);
-            } else {
-                Linux.alGetListener3f(param, out f1, out f2, out f3);
-            }
-            return Tuple.Create(f1, f2, f3);
-        }
-
-        public static uint[] GenSources(int n)
-        {
-            uint[] us = new uint[n];
-            if (Env.OSX) {
-                OSX.alGenSources(n, us);
-            } else {
-                Linux.alGenSources(n, us);
-            }
-            return us;
-        }
-
-        public static uint GenSource()
-        {
-            uint u;
-            if (Env.OSX) {
-                OSX.alGenSource(1, out u);
-            } else {
-                Linux.alGenSource(1, out u);
-            }
-            return u;
-        }
-
-        public static void DeleteSources(uint[] sources)
-        {
-            if (Env.OSX) {
-                OSX.alDeleteSources(sources.Length, sources);
-            } else {
-                Linux.alDeleteSources(sources.Length, sources);
-            }
-        }
-
-        public static void DeleteSource(uint source)
-        {
-            if (Env.OSX) {
-                OSX.alDeleteSource(1, ref source);
-            } else {
-                Linux.alDeleteSource(1, ref source);
-            }
-        }
-
-		public static bool IsSource(uint sid) {
-			return Env.OSX ? (OSX.alIsSource(sid) != 0) : (Linux.alIsSource(sid) != 0);
-		}
-
-        public static void Sourcef(uint sid, ALSourcef param, float value)
-        {
-            if (Env.OSX) {
-                OSX.alSourcef(sid, param, value);
-            } else {
-                Linux.alSourcef(sid, param, value);
-            }
-        }
-
-        public static void Source3f(uint sid, ALSource3f param, float v1, float v2, float v3)
-        {
-            if (Env.OSX) {
-                OSX.alSource3f(sid, param, v1, v2, v3);
-            } else {
-                Linux.alSource3f(sid, param, v1, v2, v3);
-            }
-        }
-
-        public static void Source3i(uint sid, ALSource3i param, int v1, int v2, int v3)
-        {
-            if (Env.OSX) {
-                OSX.alSource3i(sid, param, v1, v2, v3);
-            } else {
-                Linux.alSource3i(sid, param, v1, v2, v3);
-            }
-        }
-
-		public static void Sourcei(uint sid, ALSourcei param, int value) {
-            if (Env.OSX) {
-                OSX.alSourcei(sid, (int)param, value);
-            } else {
-                Linux.alSourcei(sid, (int)param, value);
-            }
-		} 
-		public static void Sourceb(uint sid, ALSourceb param, bool value) {
-            if (Env.OSX) {
-                OSX.alSourcei(sid, (int)param, value ? 1 : 0);
-            } else {
-                Linux.alSourcei(sid, (int)param, value ? 1 : 0);
-            }
-		}
-
-        public static float GetSourcef(uint sid, ALSourcef param)
-        {
-            float f;
-            if (Env.OSX) {
-                OSX.alGetSourcef(sid, param, out f);
-            } else {
-                Linux.alGetSourcef(sid, param, out f);
-            }
-            return f;
-        }
-
-        public static Tuple<float, float, float> GetSource3f(uint sid, ALSource3f param)
-        {
-            float f1, f2, f3;
-            if (Env.OSX) {
-                OSX.alGetSource3f(sid, param, out f1, out f2, out f3);
-            } else {
-                Linux.alGetSource3f(sid, param, out f1, out f2, out f3);
-            }
-            return Tuple.Create(f1, f2, f3);
-        }
-
-        public static Tuple<int, int, int> GetSource3i(uint sid, ALSource3i param)
-        {
-            int i1, i2, i3;
-            if (Env.OSX) {
-                OSX.alGetSource3i(sid, param, out i1, out i2, out i3);
-            } else {
-                Linux.alGetSource3i(sid, param, out i1, out i2, out i3);
-            }
-            return Tuple.Create(i1, i2, i3);
-        }
-
-		public static bool GetSourceb(uint sid, ALSourceb param) {
-			int ivalue;
-            if (Env.OSX) {
-                OSX.alGetSourcei(sid, (int)param, out ivalue);
-            } else {
-                Linux.alGetSourcei(sid, (int)param, out ivalue);
-            }
-            return (ivalue != 0);
-		}
-		public static int GetSourcei(uint sid, ALSourcei param) {
-            int value;
-            if (Env.OSX) {
-                OSX.alGetSourcei(sid, (int)param, out value);
-            } else {
-                Linux.alGetSourcei(sid, (int)param, out value);
-            }
-            return value;
-		}
-
-        public static void SourcePlayv(uint[] sources) {
-            if (Env.OSX) {
-                OSX.alSourcePlayv(sources.Length, sources);
-            } else {
-                Linux.alSourcePlayv(sources.Length, sources);
-            }
-        }
-
-        public static void SourceStopv(uint[] sources) {
-            if (Env.OSX) {
-                OSX.alSourceStopv(sources.Length, sources);
-            } else {
-                Linux.alSourceStopv(sources.Length, sources);
-            }
-        }
-
-        public static void SourceRewindv(uint[] sources) {
-            if (Env.OSX) {
-                OSX.alSourceRewindv(sources.Length, sources);
-            } else {
-                Linux.alSourceRewindv(sources.Length, sources);
-            }
-        }
-
-        public static void SourcePausev(uint[] sources) {
-            if (Env.OSX) {
-                OSX.alSourcePausev(sources.Length, sources);
-            } else {
-                Linux.alSourcePausev(sources.Length, sources);
-            }
-        }
-
-        public static void SourcePlay(uint sid) {
-            if (Env.OSX) {
-                OSX.alSourcePlay(sid);
-            } else {
-                Linux.alSourcePlay(sid);
-            }
-        }
-
-        public static void SourceStop(uint sid) {
-            if (Env.OSX) {
-                OSX.alSourceStop(sid);
-            } else {
-                Linux.alSourceStop(sid);
-            }
-        }
-
-        public static void SourceRewind(uint sid) {
-            if (Env.OSX) {
-                OSX.alSourceRewind(sid);
-            } else {
-                Linux.alSourceRewind(sid);
-            }
-        }
-
-        public static void SourcePause(uint sid) {
-            if (Env.OSX) {
-                OSX.alSourcePause(sid);
-            } else {
-                Linux.alSourcePause(sid);
-            }
-        }
-
-        public static void SourceQueueBuffers(uint sid, uint[] buffers) {
-            if (Env.OSX) {
-                OSX.alSourceQueueBuffers(sid, buffers.Length, buffers);
-            } else {
-                Linux.alSourceQueueBuffers(sid, buffers.Length, buffers);
-            }
-        }
-
-        public static void SourceUnqueueBuffers(uint sid, uint[] buffers) {
-            if (Env.OSX) {
-                OSX.alSourceUnqueueBuffers(sid, buffers.Length, buffers);
-            } else {
-                Linux.alSourceUnqueueBuffers(sid, buffers.Length, buffers);
-            }
-        }
-
-        public static uint[] GenBuffers(int n) {
-            uint[] bufs = new uint[n];
-            if (Env.OSX) {
-                OSX.alGenBuffers(n, bufs);
-            } else {
-                Linux.alGenBuffers(n, bufs);
-            }
-            return bufs;
-        }
-
-        public static uint GenBuffer() {
-            uint buf;
-            if (Env.OSX) {
-                OSX.alGenBuffer(1, out buf);
-            } else {
-                Linux.alGenBuffer(1, out buf);
-            }
-            return buf;
-        }
-
-        public static void DeleteBuffers(uint[] buffers) {
-            if (Env.OSX) {
-                OSX.alDeleteBuffers(buffers.Length, buffers);
-            } else {
-                Linux.alDeleteBuffers(buffers.Length, buffers);
-            }
-        }
-
-        public static void DeleteBuffer(uint buffer) {
-            if (Env.OSX) {
-                OSX.alDeleteBuffer(1, ref buffer);
-            } else {
-                Linux.alDeleteBuffer(1, ref buffer);
-            }
-        }
-		
-		public static bool IsBuffer(uint bid)
-		{
-			return Env.OSX ? OSX.alIsBuffer(bid) != 0 : Linux.alIsBuffer(bid) != 0;
-		}
-
-        public static void BufferData(uint bid, ALFormat format, IntPtr data, int size, int freq) {
-            if (Env.OSX) {
-                OSX.alBufferData(bid, format, data, size, freq);
-            } else {
-                Linux.alBufferData(bid, format, data, size, freq);
-            }
-        }
-
-        public static int GetBufferi(uint bid, ALGetBufferi param) {
-            int value;
-            if (Env.OSX) {
-                OSX.alGetBufferi(bid, param, out value);
-            } else {
-                Linux.alGetBufferi(bid, param, out value);
-            }
-            return value;
-        }
-
-        public static void DopplerFactor(float value) {
-            if (Env.OSX) {
-                OSX.alDopplerFactor(value);
-            } else {
-                Linux.alDopplerFactor(value);
-            }
-        }
-
-        public static void DopplerVelocity(float value) {
-            if (Env.OSX) {
-                OSX.alDopplerVelocity(value);
-            } else {
-                Linux.alDopplerVelocity(value);
-            }
-        }
-
-        public static void SpeedOfSound(float value) {
-            if (Env.OSX) {
-                OSX.alSpeedOfSound(value);
-            } else {
-                Linux.alSpeedOfSound(value);
-            }
-        }
-
-        public static void DistanceModel(ALDistanceModel distanceModel) {
-            if (Env.OSX) {
-                OSX.alDistanceModel(distanceModel);
-            } else {
-                Linux.alDistanceModel(distanceModel);
-            }
-        }
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alEnable(int capability);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDisable(int capability); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alIsEnabled(int capability); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern unsafe sbyte *alGetString(int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBooleanv(int param, [MarshalAs(UnmanagedType.LPArray)] bool[] data);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetIntegerv(int param, [MarshalAs(UnmanagedType.LPArray)] int[] data);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetFloatv(int param, [MarshalAs(UnmanagedType.LPArray)] float[] data);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetDoublev(int param, [MarshalAs(UnmanagedType.LPArray)] double[] data);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alGetBoolean(int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern int alGetInteger(int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern float alGetFloat(int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern double alGetDouble(int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern int alGetError();
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alIsExtensionPresent([MarshalAs(UnmanagedType.LPStr)] string extname);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr alGetProcAddress([MarshalAs(UnmanagedType.LPStr)] string fname);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern int alGetEnumValue([MarshalAs(UnmanagedType.LPStr)] string ename);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListenerf(int param, float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListener3f(int param, float value1, float value2, float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListenerfv(int param, [MarshalAs(UnmanagedType.LPArray)] float[] values); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListeneri(int param, int value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListener3i(int param, int value1, int value2, int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alListeneriv(int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListenerf(int param, out float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListener3f(int param, out float value1, out float value2, out float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListenerfv(int param, [MarshalAs(UnmanagedType.LPArray)] float[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListeneri(int param, out int value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListener3i(int param, out int value1, out int value2, out int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetListeneriv(int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGenSources(int n, [MarshalAs(UnmanagedType.LPArray)] uint[] sources); 
+		[DllImport(lib, EntryPoint = "alGenSources")]
+		public static extern void alGenSource(int n, out uint source); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDeleteSources(int n, [MarshalAs(UnmanagedType.LPArray)] uint[] sources);
+		[DllImport(lib, EntryPoint = "alDeleteSources")]
+		public static extern void alDeleteSource(int n, ref uint sources);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alIsSource(uint sid); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcef(uint sid, int param, float value); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSource3f(uint sid, int param, float value1, float value2, float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcefv(uint sid, int param, [MarshalAs(UnmanagedType.LPArray)] float[] values); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcei(uint sid, int param, int value); 
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSource3i(uint sid, int param, int value1, int value2, int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceiv(uint sid, int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSourcef(uint sid, int param, out float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSource3f(uint sid, int param, out float value1, out float value2, out float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSourcefv(uint sid, int param, [MarshalAs(UnmanagedType.LPArray)] float[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSourcei(uint sid, int param, out int value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSource3i(uint sid, int param, out int value1, out int value2, out int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetSourceiv(uint sid, int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcePlayv(int ns, [MarshalAs(UnmanagedType.LPArray)] uint[]sids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceStopv(int ns, [MarshalAs(UnmanagedType.LPArray)] uint[]sids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceRewindv(int ns, [MarshalAs(UnmanagedType.LPArray)] uint[]sids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcePausev(int ns, [MarshalAs(UnmanagedType.LPArray)] uint[]sids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcePlay(uint sid);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceStop(uint sid);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceRewind(uint sid);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourcePause(uint sid);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceQueueBuffers(uint sid, int numEntries, [MarshalAs(UnmanagedType.LPArray)] uint[]bids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSourceUnqueueBuffers(uint sid, int numEntries, [MarshalAs(UnmanagedType.LPArray)] uint[]bids);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGenBuffers(int n, [MarshalAs(UnmanagedType.LPArray)] uint[] buffers);
+		[DllImport(lib, EntryPoint = "alGenBuffers")]
+		public static extern void alGenBuffer(int n, out uint buffer);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDeleteBuffers(int n, [MarshalAs(UnmanagedType.LPArray)] uint[] buffers);
+		[DllImport(lib, EntryPoint = "alDeleteBuffers")]
+		public static extern void alDeleteBuffer(int n, ref uint buffer);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alIsBuffer(uint bid);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBufferData(uint bid, int format, IntPtr data, int size, int freq);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBufferf(uint bid, int param, float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBuffer3f(uint bid, int param, float value1, float value2, float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBufferfv(uint bid, int param, [MarshalAs(UnmanagedType.LPArray)] float[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBufferi(uint bid, int param, int value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBuffer3i(uint bid, int param, int value1, int value2, int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alBufferiv(uint bid, int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBufferf(uint bid, int param, out float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBuffer3f(uint bid, int param, out float value1, out float value2, out float value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBufferfv(uint bid, int param, [MarshalAs(UnmanagedType.LPArray)] float[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBufferi(uint bid, int param, out int value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBuffer3i(uint bid, int param, out int value1, out int value2, out int value3);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alGetBufferiv(uint bid, int param, [MarshalAs(UnmanagedType.LPArray)] int[] values);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDopplerFactor(float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDopplerVelocity(float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alSpeedOfSound(float value);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alDistanceModel(int distanceModel);
 	}
 }

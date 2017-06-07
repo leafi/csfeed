@@ -1,58 +1,45 @@
+#region License
+// Copyright (c) 2013 Antonie Blom
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do
+// so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+#endregion
+
 using System;
-using Blamalama.OpenAL.Bindings;
+using System.Runtime.InteropServices;
+using System.Security;
 
-namespace Blamalama
-{
-    public static class Alc
-    {
-        public static bool CloseDevice(IntPtr device)
-        {
-            return Env.OSX ? OSX.alcCloseDevice(device) != 0 : Linux.alcCloseDevice(device) != 0;
-        }
+namespace OpenAL {
+	public static class Alc {
+		private const string lib = "OpenAL32.dll";
 
-        public static IntPtr OpenDevice(string devicename)
-        {
-            return Env.OSX ? OSX.alcOpenDevice(devicename) : Linux.alcOpenDevice(devicename);
-        }
-
-        public static bool IsExtensionPresent(IntPtr device, string extname)
-        {
-            return Env.OSX ? OSX.alcIsExtensionPresent(device, extname) != 0 : Linux.alcIsExtensionPresent(device, extname) != 0;
-        }
-
-        public static int[] GetIntegerv(IntPtr device, int param, int size)
-        {
-            int[] cr = new int[size];
-            if (Env.OSX) {
-                OSX.alcGetIntegerv(device, param, size, cr);
-            } else {
-                Linux.alcGetIntegerv(device, param, size, cr);
-            }
-            return cr;
-        }
-
-        public static IntPtr CreateContext(IntPtr device, int[] attrlist)
-        {
-            return Env.OSX ? OSX.alcCreateContext(device, attrlist) : Linux.alcCreateContext(device, attrlist);
-        }
-
-        public static void DestroyContext(IntPtr context)
-        {
-            if (Env.OSX) {
-                OSX.alcDestroyContext(context);
-            } else {
-                Linux.alcDestroyContext(context);
-            }
-        }
-
-        public static bool MakeContextCurrent(IntPtr context)
-        {
-            return Env.OSX ? OSX.alcMakeContextCurrent(context) != 0 : Linux.alcMakeContextCurrent(context) != 0;
-        }
-
-        public static int GetError(IntPtr device)
-        {
-            return Env.OSX ? OSX.alcGetError(device) : Linux.alcGetError(device);
-        }
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alcCloseDevice(IntPtr device);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr alcOpenDevice([MarshalAs(UnmanagedType.LPStr)] string devicename);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alcIsExtensionPresent(IntPtr device, [MarshalAs(UnmanagedType.LPStr)] string extname);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alcGetIntegerv(IntPtr device, int param, int size, [MarshalAs(UnmanagedType.LPArray)] int[] data);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr alcCreateContext(IntPtr device, [MarshalAs(UnmanagedType.LPArray)] int[] attrlist);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern bool alcMakeContextCurrent(IntPtr context);
 	}
 }

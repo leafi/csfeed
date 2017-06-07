@@ -1,1 +1,1 @@
-From Pencil.Gaming. Refactored, .net core compat.
+From Pencil.Gaming. Refactored, removed 32-bit support. For Mono this one.

@@ -104,6 +104,10 @@
     <Compile Include="Paint2D\Shed.cs" />
     <Compile Include="Paint2D\ViewHelper.cs" />
     <Compile Include="UI\Painter.cs" />
+    <Compile Include="Libs\3rdParty\OpenAL\ALEnums.cs" />
+    <Compile Include="Libs\3rdParty\OpenAL\ALUtils.cs" />
+    <Compile Include="Libs\3rdParty\OpenAL\AL.cs" />
+    <Compile Include="Libs\3rdParty\OpenAL\Alc.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
