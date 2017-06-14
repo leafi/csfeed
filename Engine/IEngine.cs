@@ -19,7 +19,7 @@ namespace Csfeed
 		int Height { get; set; }
 
 		MouseMode MouseMode { get; set; }
-		Queue<IInputEvent> InputQueue { get; set; }
+		Queue<IInputEvent> InputQueue { get; }
 
 		EngineResizeFun OnResize { get; set; }
 

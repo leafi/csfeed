@@ -66,6 +66,16 @@ namespace Csfeed
 			putLine(tvb, pts, width, color);
 		}
 
+		private static Vector2 textOrigin = new Vector2(300f, 0f);
+
+		public unsafe static void Update()
+		{
+			if (Heii.MouseLeft) {
+				textOrigin.X = Heii.MouseX;
+				textOrigin.Y = Heii.MouseY;
+			}
+		}
+
 		public unsafe static void Draw()
 		{
 			var engine = Program.Engine;
@@ -86,7 +96,9 @@ namespace Csfeed
 
 			ViewHelper.Submit(VIEW_ID, Sheds.Color, tvb);
 
-			Painter.String(VIEW_ID, font, new Vector2(300f, 0f), "Hi there! Just testing the font system.");
+			Painter.String(VIEW_ID, font, textOrigin, "Hi there! Just testing the font system.");
+
+
 
 		}
     }

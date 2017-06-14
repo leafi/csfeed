@@ -26,7 +26,16 @@ namespace Csfeed
 			}
 		}
 
-		public Queue<IInputEvent> InputQueue { get; set; } = new Queue<IInputEvent>();
+		private Queue<IInputEvent> lastInputQueue = new Queue<IInputEvent>();
+		private Queue<IInputEvent> inputQueue = new Queue<IInputEvent>();
+		private Queue<IInputEvent> nextInputQueue = new Queue<IInputEvent>();
+		private object inputLock = new object();
+
+		public Queue<IInputEvent> InputQueue {
+			get {
+				return inputQueue;
+			}
+		}
 
 		public MouseMode MouseMode {
 			get {
@@ -150,26 +159,26 @@ namespace Csfeed
 				if (x > Width || x < 0 || y < 0 || y > Height) {
 					return;
 				}
-				InputQueue.Enqueue(new AbsMouseMoveInputEvent() { x = x, y = y });
+				lock (inputLock) nextInputQueue.Enqueue(new AbsMouseMoveInputEvent() { x = x, y = y });
 			});
 
 			Glfw.SetMouseButtonCallback(Window, (wnd, btn, action) => {
 				if (action == KeyAction.Repeat) {
 					return;
 				}
-				InputQueue.Enqueue(new MouseButtonInputEvent() { button = btn, action = action });
+				lock (inputLock) nextInputQueue.Enqueue(new MouseButtonInputEvent() { button = btn, action = action });
 			});
 
 			Glfw.SetScrollCallback(Window, (wnd, xoffset, yoffset) => {
-				InputQueue.Enqueue(new MouseScrollInputEvent() { scrollX = xoffset, scrollY = yoffset });
+				lock (inputLock) nextInputQueue.Enqueue(new MouseScrollInputEvent() { scrollX = xoffset, scrollY = yoffset });
 			});
 
 			Glfw.SetCharCallback(Window, (wnd, ch) => {
-				InputQueue.Enqueue(new CharInputEvent() { c = ch });
+				lock (inputLock) nextInputQueue.Enqueue(new CharInputEvent() { c = ch });
 			});
 
 			Glfw.SetKeyCallback(Window, (wnd, key, scanCode, action, mods) => {
-				InputQueue.Enqueue(new KeyInputEvent() { key = key, scanCode = scanCode, action = action, mods = mods });
+				lock (inputLock) nextInputQueue.Enqueue(new KeyInputEvent() { key = key, scanCode = scanCode, action = action, mods = mods });
 			});
         }
 
@@ -185,6 +194,14 @@ namespace Csfeed
 		{
 			Bgfx.Frame();
 			Glfw.PollEvents();
+
+			lock (inputLock) {
+				var qtmp = lastInputQueue;
+				lastInputQueue = inputQueue;
+				inputQueue = nextInputQueue;
+				qtmp.Clear();
+				nextInputQueue = qtmp;
+			}
 		}
 
 		public void Destroy()

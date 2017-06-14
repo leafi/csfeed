@@ -22,13 +22,16 @@ namespace Csfeed
 			BezCrv.Load();
 
 			while (!Engine.WindowShouldClose) {
+				BezCrv.Update();
+
 				Engine.BeginFrame();
 
 				BezCrv.Draw();
 
+				// makes InputQueue up-to-date
 				Engine.EndFrame();
-				// !!!! clone this & use higher level things instead.. this is way too racy
-				Engine.InputQueue.Clear();
+
+				Heii.Update(Engine.InputQueue);
 			}
 
 			AudioMan.Destroy(ss);

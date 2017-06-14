@@ -112,6 +112,7 @@
     <Compile Include="Libs\3rdParty\OpenAL\AL.cs" />
     <Compile Include="Libs\3rdParty\OpenAL\Alc.cs" />
     <Compile Include="Audio.cs" />
+    <Compile Include="Heii.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
