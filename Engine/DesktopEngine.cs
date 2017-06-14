@@ -33,7 +33,7 @@ namespace Csfeed
 
 		public Queue<IInputEvent> InputQueue {
 			get {
-				return inputQueue;
+				lock (inputLock) return inputQueue;
 			}
 		}
 
