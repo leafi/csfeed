@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Concentus.Enums;
+using Concentus.Oggfile;
+using Concentus.Structs;
 using OpenAL;
 
 namespace Csfeed
@@ -85,6 +91,48 @@ namespace Csfeed
 			}
 		}
 
+		private static byte[] loadStaticOpus(string path)
+		{
+			var xshorts = new List<short[]>();
+			int blen = 0;
+
+			// If there's an easy way to find out if the .opus file is mono or stereo - 
+			// even assuming it's just 1 very simple stream in the file - then it's certainly
+			// not easily exposed.
+			//
+			// Fuck it. Let's just ask for stereo, no matter what.
+			// (As for the 48kHz: .opus files can't be e.g. 44.1kHz.)
+			var decoder = OpusDecoder.Create(48000, 2);
+			using (FileStream fileIn = new FileStream($"../../data/{path}.opus", FileMode.Open)) {
+				var oggIn = new OpusOggReadStream(decoder, fileIn);
+				while (oggIn.HasNextPacket) {
+					var packet = oggIn.DecodeNextPacket();
+					if (packet != null) {
+						xshorts.Add(packet);
+						blen += packet.Length * 2;
+					}
+				}
+			}
+
+			// ^ Decoding a 1 minute long .opus file takes aaaagggeeesss... (well, it is a 'native' c# decoder.)
+			// We should probably stream stuff that's longer even than a few seconds.
+
+			byte[] output = new byte[blen];
+			unsafe {
+				fixed (byte* x0 = &output[0]) {
+					var xptr = (short*)x0;
+					foreach (var xshort in xshorts) {
+						foreach (var sht in xshort) {
+							*xptr = sht;
+							xptr++;
+						}
+					}
+				}
+			}
+
+			return output;
+		}
+
 		public static StaticSound Create(string path)
 		{
 			var snd = new StaticSound();
@@ -93,14 +141,15 @@ namespace Csfeed
 			checkErr();
 
 			// read pcm samples
-			byte[] data;
+			/*byte[] data;
 			ALFormat alFormat;
 			uint sampleRate;
 			ALUtils.LoadWav(path, out data, out alFormat, out sampleRate);
-			Console.WriteLine($"ALUtils.LoadWav path {path} data length {data.Length} ALFormat {alFormat.ToString()} rate {sampleRate}hz");
+			Console.WriteLine($"ALUtils.LoadWav path {path} data length {data.Length} ALFormat {alFormat.ToString()} rate {sampleRate}hz");*/
+			var xs = loadStaticOpus(path);
 			unsafe {
-				fixed (byte* s0 = &data[0]) {
-					AL.alBufferData(snd.Buffer, (int)alFormat, new IntPtr(s0), data.Length, (int)sampleRate);
+				fixed (byte* s0 = &xs[0]) {
+					AL.alBufferData(snd.Buffer, (int)ALFormat.Stereo16, new IntPtr(s0), xs.Length, 48000);
 					checkErr();
 				}
 			}

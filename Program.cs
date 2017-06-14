@@ -14,7 +14,7 @@ namespace Csfeed
 
 			AudioMan.Initialize();
 
-			var ss = AudioMan.Create("../../data/dink.wav");
+			var ss = AudioMan.Create("dink");
 			AudioMan.Play(ss);
 
 			Paint2D.Painter.Initialize();
