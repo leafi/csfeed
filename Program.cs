@@ -12,6 +12,11 @@ namespace Csfeed
 			Console.WriteLine(System.Environment.CurrentDirectory);
 			Engine = new DesktopEngine();
 
+			AudioMan.Initialize();
+
+			var ss = AudioMan.Create("../../data/dink.wav");
+			AudioMan.Play(ss);
+
 			Paint2D.Painter.Initialize();
 
 			BezCrv.Load();
@@ -26,6 +31,9 @@ namespace Csfeed
 				Engine.InputQueue.Clear();
 			}
 
+			AudioMan.Destroy(ss);
+
+			AudioMan.Shutdown();
 			Engine.Destroy();
 		}
 	}

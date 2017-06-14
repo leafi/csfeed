@@ -26,19 +26,23 @@ using System.Runtime.InteropServices;
 using System.Security;
 
 namespace OpenAL {
-	public static class Alc {
-		private const string lib = "OpenAL32.dll";
-
+	public static partial class AL {
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern bool alcCloseDevice(IntPtr device);
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern IntPtr alcOpenDevice([MarshalAs(UnmanagedType.LPStr)] string devicename);
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr alcOpenDevice(IntPtr devn);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern bool alcIsExtensionPresent(IntPtr device, [MarshalAs(UnmanagedType.LPStr)] string extname);
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern void alcGetIntegerv(IntPtr device, int param, int size, [MarshalAs(UnmanagedType.LPArray)] int[] data);
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern IntPtr alcGetString(IntPtr device, int param);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern IntPtr alcCreateContext(IntPtr device, [MarshalAs(UnmanagedType.LPArray)] int[] attrlist);
+		[DllImport(lib), SuppressUnmanagedCodeSecurity]
+		public static extern void alcDestroyContext(IntPtr context);
 		[DllImport(lib), SuppressUnmanagedCodeSecurity]
 		public static extern bool alcMakeContextCurrent(IntPtr context);
 	}
