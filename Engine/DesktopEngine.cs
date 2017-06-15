@@ -56,8 +56,8 @@ namespace Csfeed
 			if (plat == PlatformID.Unix) {
 				// Linux-only... so far.
 				// (Why didn't I need to do this under .NET Core?)
-				dlopen("/usr/lib/libX11.so.6", RTLD_NOW | RTLD_GLOBAL);
-				dlopen("/usr/lib/libGL.so", RTLD_NOW | RTLD_GLOBAL);
+				//dlopen("/usr/lib/libX11.so.6", RTLD_NOW | RTLD_GLOBAL);
+				//dlopen("/usr/lib/libGL.so", RTLD_NOW | RTLD_GLOBAL);
 			}
 
 			Glfw.SetErrorCallback((code, descUtf8) => {
@@ -92,7 +92,7 @@ namespace Csfeed
 					winpd.Context = IntPtr.Zero; // apparently always fine? (bgfx)
 					Bgfx.SetPlatformData(winpd);
 					break;
-				case PlatformID.MacOSX:
+                    default: //case PlatformID.MacOSX:
 					var osxpd = new PlatformData();
 					osxpd.Backbuffer = IntPtr.Zero;
 					osxpd.BackbufferDepthStencil = IntPtr.Zero;
@@ -101,7 +101,7 @@ namespace Csfeed
 					osxpd.Context = IntPtr.Zero; // glfw 3.2 ClientAPI NoAPI
 					Bgfx.SetPlatformData(osxpd);
 					break;
-				case PlatformID.Unix:
+				/*case PlatformID.Unix:
 					var linpd = new PlatformData();
 					linpd.Backbuffer = IntPtr.Zero;
 					linpd.BackbufferDepthStencil = IntPtr.Zero;
@@ -109,7 +109,7 @@ namespace Csfeed
 					linpd.WindowHandle = new IntPtr((long)Glfw.GetX11Window(Window)); // X11 window handles are always 32bit
 					linpd.Context = IntPtr.Zero; // glfw 3.2 ClientAPI NoAPI
 					Bgfx.SetPlatformData(linpd);
-					break;
+					break;*/
 			}
 
 			Bgfx.Init(RendererBackend.OpenGL, default(Adapter), null);
