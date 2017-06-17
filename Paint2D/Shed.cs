@@ -146,6 +146,23 @@ namespace Csfeed.Paint2D
 		}
 	}
 
+	public class RUIShed : XYUVColorShed
+	{
+		protected override void initialize()
+		{
+			program = loadScx("rui");
+
+			vertexLayout = new VertexLayout();
+			vertexLayout.Begin();
+			vertexLayout.Add(VertexAttributeUsage.Position, 2, VertexAttributeType.Float);
+			vertexLayout.Add(VertexAttributeUsage.TexCoord0, 2, VertexAttributeType.Float);
+			vertexLayout.Add(VertexAttributeUsage.Color0, 4, VertexAttributeType.Float);
+			vertexLayout.End();
+
+			textureSampler = new Uniform("s_texColor", UniformType.Int1);
+		}
+	}
+
 	public class TexColorShed : XYUVColorShed
 	{
 		protected override void initialize()
@@ -165,6 +182,7 @@ namespace Csfeed.Paint2D
 	{
 		public static ColorShed Color = new ColorShed();
 		public static FontShed Font = new FontShed();
+		public static RUIShed RUI = new RUIShed();
 		public static TexColorShed TexColor = new TexColorShed();
 	}
 }

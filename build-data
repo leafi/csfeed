@@ -33,6 +33,10 @@ luajit shaders/unscx.lua shaders/src/color.scx
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.vs.sc" -o "shaders/bin/glsl/color.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common
 ./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/color.fs.sc" -o "shaders/bin/glsl/color.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/color.varying.sc" -i Natives/tools/bgfx/common
 
+luajit shaders/unscx.lua shaders/src/rui.scx
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/rui.vs.sc" -o "shaders/bin/glsl/rui.scx.vshader" --verbose --Werror --type v --platform linux --varyingdef "shaders/tmp/rui.varying.sc" -i Natives/tools/bgfx/common
+./Natives/tools/bgfx/shaderc-linux64 -f "shaders/tmp/rui.fs.sc" -o "shaders/bin/glsl/rui.scx.fshader" --verbose --Werror --type f --platform linux --varyingdef "shaders/tmp/rui.varying.sc" -i Natives/tools/bgfx/common
+
 ######################
 # TEXTURES
 ######################

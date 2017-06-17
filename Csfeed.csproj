@@ -107,18 +107,22 @@
     <Compile Include="Paint2D\Fontify.cs" />
     <Compile Include="Paint2D\Shed.cs" />
     <Compile Include="Paint2D\ViewHelper.cs" />
-    <Compile Include="UI\Painter.cs" />
+    <Compile Include="RetainedUI\Painter.cs" />
     <Compile Include="Libs\3rdParty\OpenAL\ALEnums.cs" />
     <Compile Include="Libs\3rdParty\OpenAL\AL.cs" />
     <Compile Include="Libs\3rdParty\OpenAL\Alc.cs" />
     <Compile Include="Audio.cs" />
     <Compile Include="Heii.cs" />
+    <Compile Include="RetainedUI\Component.cs" />
+    <Compile Include="Libs\StaticIni.cs" />
+    <Compile Include="RetainedUI\Theme.cs" />
+    <Compile Include="RetainedUI\Button.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />
     <Folder Include="Engine\" />
     <Folder Include="Paint2D\" />
-    <Folder Include="UI\" />
+    <Folder Include="RetainedUI\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

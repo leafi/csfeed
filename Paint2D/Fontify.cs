@@ -76,6 +76,7 @@ namespace Csfeed.Paint2D
 				pwhite++;
 			}
 
+			// Note: "white" glyph used by RetainedUI system!
 			var whiteAtlasRect = textAnalyzer.packer.Insert(16, 16);
 			glyphAtlas.Insert(
 				0,

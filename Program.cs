@@ -12,6 +12,9 @@ namespace Csfeed
 			Console.WriteLine(System.Environment.CurrentDirectory);
 			Engine = new DesktopEngine();
 
+			// let RetainedUI load theme deetz
+			RetainedUI.Theme.Load();
+
 			AudioMan.Initialize();
 
 			var ss = AudioMan.Create("dink");
