@@ -117,6 +117,7 @@
     <Compile Include="Libs\StaticIni.cs" />
     <Compile Include="RetainedUI\Theme.cs" />
     <Compile Include="RetainedUI\Button.cs" />
+    <Compile Include="RetainedUI\RUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Natives\" />

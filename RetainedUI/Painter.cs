@@ -208,12 +208,12 @@ namespace Csfeed.RetainedUI
 			TVB = fontify.DrawStringDotDotDot(x, y, font, text, color, maxWidth);
 		}
 
-		public System.Drawing.Point MeasureString(ValueTuple<FontFace, float> font, string text)
+		public static System.Drawing.Point MeasureString(ValueTuple<FontFace, float> font, string text)
 		{
 			return fontify.MeasureString(font, text);
 		}
 
-		public Rectangle MeasureString(int x, int y, ValueTuple<FontFace, float> font, string text)
+		public static Rectangle MeasureString(int x, int y, ValueTuple<FontFace, float> font, string text)
 		{
 			return fontify.MeasureString(x, y, font, text);
 		}

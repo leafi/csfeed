@@ -33,6 +33,8 @@ namespace Csfeed.RetainedUI
 		public int mx;
 		public int my;
 		public MouseButton mb;
+		public int scrx;
+		public int scry;
 	}
 
 	public interface IMouseComponent
@@ -51,6 +53,9 @@ namespace Csfeed.RetainedUI
 
     public abstract class Component
     {
+		public RUI RUI;
+		public List<Component> Children;
+
 		public int X;
 		public int Y;
 		public virtual int W { get; set; } = 50;
@@ -64,7 +69,11 @@ namespace Csfeed.RetainedUI
 		public RectangleF LastClippedBounds;
 		public virtual bool ScissorBounds { get { return true; } }
 
-		public abstract void Layout(Painter painter, int? w, int? h);
+		public virtual void LayoutConstrained(int? w, int? h)
+		{
+			throw new NotSupportedException();
+		}
+		public abstract void Layout();
 		public abstract void Render(Painter painter);
     }
 }

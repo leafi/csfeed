@@ -51,16 +51,25 @@ namespace Csfeed.RetainedUI
 			painter.DrawString(tx, ty, Font, Text, Theme.Button.TextColor);
 		}
 
-		public override void Layout(Painter painter, int? w, int? h)
+		public override void LayoutConstrained(int? w, int? h)
 		{
-			var sz = painter.MeasureString(Font, Text);
-			W = w ?? ((W < sz.X + 10) ? sz.X + 10 : W);
-			H = h ?? ((H < sz.Y + 8) ? sz.Y + 8 : H);
+			if (W == 0 || H == 0) {
+				Layout();
+			}
+			W = w ?? W;
+			H = h ?? H;
+		}
+
+		public override void Layout()
+		{
+			var sz = Painter.MeasureString(Font, Text);
+			W = sz.X + 10;
+			H = sz.Y + 8;
 		}
 
 		public override void Render(Painter painter)
 		{
-			var sz = painter.MeasureString(Font, Text);
+			var sz = Painter.MeasureString(Font, Text);
 			int tw = sz.X;
 			int th = sz.Y;
 			painter.DrawRectangleFilledV(X, Y, W, H, Theme.Button.OutlineTopColor, Theme.Button.OutlineBottomColor);
