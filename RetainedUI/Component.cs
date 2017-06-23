@@ -40,7 +40,6 @@ namespace Csfeed.RetainedUI
 	public interface IMouseComponent
 	{
 		MouseReturnValue OnMouse(bool inBounds, MouseState mouse, MouseState last);
-		void OnMouseCancel();
 		void InflateMouseBounds(ref RectangleF r);
 	}
 
@@ -54,7 +53,6 @@ namespace Csfeed.RetainedUI
     public abstract class Component
     {
 		public RUI RUI;
-		public List<Component> Children;
 
 		public int X;
 		public int Y;

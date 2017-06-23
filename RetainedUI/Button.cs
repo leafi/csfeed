@@ -41,11 +41,6 @@ namespace Csfeed.RetainedUI
 			};
 		}
 
-		public void OnMouseCancel()
-		{
-			stateHeld = false;
-		}
-
 		protected virtual void paintString(Painter painter, int tx, int ty)
 		{
 			painter.DrawString(tx, ty, Font, Text, Theme.Button.TextColor);
